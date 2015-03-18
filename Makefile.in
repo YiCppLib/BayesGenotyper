@@ -291,6 +291,7 @@ builddir = @builddir@
 datadir = @datadir@
 datarootdir = @datarootdir@
 docdir = @docdir@
+dot = @dot@
 dvidir = @dvidir@
 exec_prefix = @exec_prefix@
 host = @host@
@@ -322,7 +323,7 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 ACLOCAL_AMFLAGS = -I m4
-SUBDIRS = src . test
+SUBDIRS = src . doc test
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 

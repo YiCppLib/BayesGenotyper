@@ -1,0 +1,77 @@
+digraph G {
+	fontname = "Bitstream Vera Sans"
+	fontsize = 8
+	rankdir=BT;
+
+	node [
+		fontname = "Bitstream Vera Sans"
+		fontsize = 8
+		shape = "record"
+	]
+
+	edge [
+		fontname = "Bitstream Vera Sans"
+		fontsize = 8
+	]
+
+	IAlleleAlphabet [
+		label = "{IAlleleAlphabet\<T\>||+count() : int\l+map(allele : int) : T\l}"
+	]
+
+	SingleNtAlleleAlphabet [
+		label = "{SingleNtAlleleAlphabet||+init()\l}"
+	]
+
+	edge [
+		arrowhead = "empty"
+	]
+
+	SingleNtAlleleAlphabet -> IAlleleAlphabet
+
+
+	IGenotypeList [
+		label = "{IGenotypeList||+begin() : iterator\<vector\<int\>\>\l+end() : iterator\<vector\<int\>\>\l}"
+	]
+
+	PloidyMultisetGenotypeList [
+		label = "{PloidyMultisetGenotypeList||+init(alphabet : IAlleleAlphabet, ploidy : int)\l}"
+	]
+
+	PloidyMultisetGenotypeList -> IGenotypeList
+
+	IObservation [
+		label = "{IObservation||+count() : int\l+quality() : double\l}"
+	]
+
+	NGSObservation [
+		label = "{NGSObservation||}"
+	]
+
+	IlluminaObservation [
+		label = "{IlluminaObservation||}"
+	]
+
+	NGSObservation -> IObservation
+	IlluminaObservation -> NGSObservation
+
+	IEvidence [
+		label = "{IEvidence||+observationForAllele(allele : int) : IObservation\l}"
+	]
+
+	GraphPileupEvidence [
+		label = "{GraphPileupEvidence||...\l}"
+	]
+
+	GraphPileupEvidence -> IEvidence
+
+	IGenotyper [
+		label = "{IGenotyper||+init(genotypes : IGenotypeList)\l+genotype(e : IEvidence) : vector\<int\>\l}"
+	]
+
+	BayesProbGenotyper [
+		label = "{BayesProbGenotyper||}"
+	]
+
+	BayesProbGenotyper -> IGenotyper
+
+}

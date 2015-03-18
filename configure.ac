@@ -24,6 +24,10 @@ LT_INIT([disable-shared])
 AC_LANG([C++])
 AX_CXX_COMPILE_STDCXX_11([noext], [mandatory])
 
+AC_CHECK_PROG([dot], [dot], [yes], [no])
+AM_CONDITIONAL([FOUND_DOT], [test "x$dot" = xyes])
+AM_COND_IF([FOUND_DOT],,[AC_MSG_WARN([Graphviz dot utility not found. Document compiling disabled])])
+
 AC_CONFIG_SRCDIR([src/Genotyper.cc])
 AC_CONFIG_HEADERS([config.h])
 
@@ -63,6 +67,7 @@ fi
 
 AC_CONFIG_FILES([Makefile
 				 src/Makefile
+				 doc/Makefile
 				 test/Makefile])
 
 AC_OUTPUT
