@@ -1,13 +1,22 @@
+.dot.pdf:
+	@dot -Tpdf -o $@ $<
+
+EXTRA_DIST = design.dot
+
+DOCUMENTS=design.pdf
+
 if FOUND_DOT
-
-doc_DATA = design.pdf
-
-design.pdf: design.dot
-	dot $(top_srcdir)/doc/design.dot -Tpdf > $@
+all: $(DOCUMENTS)
 
 else !FOUND_DOT
 all:
 	@echo "Document compilation is disabled due to missing dot utility"
 
-.PHONY: all
 endif !FOUND_DOT
+
+.PHONY: all
+
+clean-local: 
+	@rm -f $(DOCUMENTS)
+
+.PHONY: clean

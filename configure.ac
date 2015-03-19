@@ -59,6 +59,33 @@ if test "x${have_gsl}" = xno; then
 fi
 ## END: CHECKINF FOR GSL ##
 
+## START: CHECKING FOR GMOCK ##
+AC_ARG_WITH([gmock],
+			[AS_HELP_STRING([--with-gmock=DIR],
+							[specify the path to search for gmock])],
+							[gmock_path=${withval}])
+if test "x${gmock_path}" != x; then
+	if test -e ${gmock_path}/lib; then LDFLAGS+=" -L${gmock_path}/lib"; fi
+	if test -e ${gmock_path}/include; then CPPFLAGS+=" -isystem ${gmock_path}/include -I${gmock_path}"; fi
+	if test -e ${gmock_path}/gtest/lib; then LDFLAGS+=" -L${gmock_path}/gtest/lib"; fi
+	if test -e ${gmock_path}/gtest/include; then CPPFLAGS+=" -isystem ${gmock_path}/gtest/include -I${gmock_path}/gtest"; fi
+
+fi
+echo "checking for gmock in ${gmock_path}"
+
+AC_CHECK_HEADERS([${gmock_path}/include/gmock/gmock.h], [have_gmock=yes], [have_gmock=no])
+AC_CHECK_HEADERS([${gmock_path}/gtest/include/gtest/gtest.h], [have_gtest=yes], [have_gtest=no])
+
+echo "have_gmock = ${have_gmock}, have_gtest = ${have_gtest}"
+
+AM_CONDITIONAL([FOUND_GMOCK], [test "x${have_gmock}" == xyes])
+AM_CONDITIONAL([FOUND_GTEST], [test "x${have_gtest}" == xyes])
+
+AM_COND_IF([FOUND_GMOCK], [AC_SUBST([GMOCK_DIR], [${gmock_path}])], [AC_MSG_WARN([Unable to locate gmock header, testing disabled])])
+AM_COND_IF([FOUND_GTEST], [AC_SUBST([GTEST_DIR], [${gmock_path}/gtest])], [AC_MSG_WARN([Unable to locate gtest header, testing disabled])])
+## END: CHECKINF FOR GMOCK ##
+
+
 # Checks for header files.
 
 # Checks for typedefs, structures, and compiler characteristics.

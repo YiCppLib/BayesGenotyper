@@ -1,5 +1,5 @@
-GMOCK_DIR = /opt/gmock-1.7.0
-GTEST_DIR = ${GMOCK_DIR}/gtest
+GMOCK_DIR = @GMOCK_DIR@
+GTEST_DIR = @GTEST_DIR@
 
 AM_LDFLAGS = -all-static
 
