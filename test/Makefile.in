@@ -77,7 +77,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-TESTS = testSingleSample$(EXEEXT)
+TESTS = testSingleNtAlleleAlphabet$(EXEEXT) testSingleSample$(EXEEXT)
 check_PROGRAMS = $(am__EXEEXT_1)
 subdir = test
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
@@ -94,17 +94,26 @@ mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
-am__EXEEXT_1 = testSingleSample$(EXEEXT)
+am__EXEEXT_1 = testSingleNtAlleleAlphabet$(EXEEXT) \
+	testSingleSample$(EXEEXT)
+am_testSingleNtAlleleAlphabet_OBJECTS =  \
+	testSingleNtAlleleAlphabet.$(OBJEXT)
+testSingleNtAlleleAlphabet_OBJECTS =  \
+	$(am_testSingleNtAlleleAlphabet_OBJECTS)
+testSingleNtAlleleAlphabet_LDADD = $(LDADD)
+testSingleNtAlleleAlphabet_DEPENDENCIES =  \
+	../src/libyi_bayesgenotype.la ${GMOCK_DIR}/lib/libgmock.la \
+	${GTEST_DIR}/lib/libgtest.la ${GMOCK_DIR}/lib/libgmock_main.la
+AM_V_lt = $(am__v_lt_@AM_V@)
+am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
+am__v_lt_0 = --silent
+am__v_lt_1 = 
 am_testSingleSample_OBJECTS = testSingleSample.$(OBJEXT)
 testSingleSample_OBJECTS = $(am_testSingleSample_OBJECTS)
 testSingleSample_LDADD = $(LDADD)
 testSingleSample_DEPENDENCIES = ../src/libyi_bayesgenotype.la \
 	${GMOCK_DIR}/lib/libgmock.la ${GTEST_DIR}/lib/libgtest.la \
 	${GMOCK_DIR}/lib/libgmock_main.la
-AM_V_lt = $(am__v_lt_@AM_V@)
-am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
-am__v_lt_0 = --silent
-am__v_lt_1 = 
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -139,8 +148,10 @@ AM_V_CXXLD = $(am__v_CXXLD_@AM_V@)
 am__v_CXXLD_ = $(am__v_CXXLD_@AM_DEFAULT_V@)
 am__v_CXXLD_0 = @echo "  CXXLD   " $@;
 am__v_CXXLD_1 = 
-SOURCES = $(testSingleSample_SOURCES)
-DIST_SOURCES = $(testSingleSample_SOURCES)
+SOURCES = $(testSingleNtAlleleAlphabet_SOURCES) \
+	$(testSingleSample_SOURCES)
+DIST_SOURCES = $(testSingleNtAlleleAlphabet_SOURCES) \
+	$(testSingleSample_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -506,6 +517,7 @@ LDADD = ../src/libyi_bayesgenotype.la \
 		${GMOCK_DIR}/lib/libgmock_main.la \
 		-lz
 
+testSingleNtAlleleAlphabet_SOURCES = testSingleNtAlleleAlphabet.cc
 testSingleSample_SOURCES = testSingleSample.cc
 all: all-am
 
@@ -551,6 +563,10 @@ clean-checkPROGRAMS:
 	echo " rm -f" $$list; \
 	rm -f $$list
 
+testSingleNtAlleleAlphabet$(EXEEXT): $(testSingleNtAlleleAlphabet_OBJECTS) $(testSingleNtAlleleAlphabet_DEPENDENCIES) $(EXTRA_testSingleNtAlleleAlphabet_DEPENDENCIES) 
+	@rm -f testSingleNtAlleleAlphabet$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(testSingleNtAlleleAlphabet_OBJECTS) $(testSingleNtAlleleAlphabet_LDADD) $(LIBS)
+
 testSingleSample$(EXEEXT): $(testSingleSample_OBJECTS) $(testSingleSample_DEPENDENCIES) $(EXTRA_testSingleSample_DEPENDENCIES) 
 	@rm -f testSingleSample$(EXEEXT)
 	$(AM_V_CXXLD)$(CXXLINK) $(testSingleSample_OBJECTS) $(testSingleSample_LDADD) $(LIBS)
@@ -561,6 +577,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testSingleNtAlleleAlphabet.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testSingleSample.Po@am__quote@
 
 .cc.o:
@@ -783,6 +800,13 @@ recheck: all $(check_PROGRAMS)
 	        am__force_recheck=am--force-recheck \
 	        TEST_LOGS="$$log_list"; \
 	exit $$?
+testSingleNtAlleleAlphabet.log: testSingleNtAlleleAlphabet$(EXEEXT)
+	@p='testSingleNtAlleleAlphabet$(EXEEXT)'; \
+	b='testSingleNtAlleleAlphabet'; \
+	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
+	--log-file $$b.log --trs-file $$b.trs \
+	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
+	"$$tst" $(AM_TESTS_FD_REDIRECT)
 testSingleSample.log: testSingleSample$(EXEEXT)
 	@p='testSingleSample$(EXEEXT)'; \
 	b='testSingleSample'; \

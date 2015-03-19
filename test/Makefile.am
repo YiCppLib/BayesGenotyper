@@ -17,7 +17,9 @@ LDADD = ../src/libyi_bayesgenotype.la \
 
 ## -- below to be changed -- ##
 
-TESTS = testSingleSample
+TESTS = testSingleNtAlleleAlphabet \
+		testSingleSample
 
 check_PROGRAMS = ${TESTS}
+testSingleNtAlleleAlphabet_SOURCES=testSingleNtAlleleAlphabet.cc
 testSingleSample_SOURCES=testSingleSample.cc

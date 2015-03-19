@@ -15,7 +15,7 @@ digraph G {
 	]
 
 	IAlleleAlphabet [
-		label = "{IAlleleAlphabet\<T\>||+count() : int\l+map(allele : int) : T\l}"
+		label = "{IAlleleAlphabet\<T\>||+count() : int\l+actual(allele : int) : T\l}"
 	]
 
 	SingleNtAlleleAlphabet [

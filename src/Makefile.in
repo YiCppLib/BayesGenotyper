@@ -122,7 +122,8 @@ am__uninstall_files_from_dir = { \
 am__installdirs = "$(DESTDIR)$(libdir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 libyi_bayesgenotype_la_LIBADD =
-am_libyi_bayesgenotype_la_OBJECTS = Genotyper.lo
+am_libyi_bayesgenotype_la_OBJECTS = SingleNtAlleleAlphabet.lo \
+	Genotyper.lo
 libyi_bayesgenotype_la_OBJECTS = $(am_libyi_bayesgenotype_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -329,7 +330,10 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 lib_LTLIBRARIES = libyi_bayesgenotype.la
-libyi_bayesgenotype_la_SOURCES = Genotyper.h \
+libyi_bayesgenotype_la_SOURCES = IAlleleAlphabet.h \
+								 SingleNtAlleleAlphabet.h \
+								 SingleNtAlleleAlphabet.cc \
+								 Genotyper.h \
 								 Genotyper.cc
 
 all: all-am
@@ -412,6 +416,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Genotyper.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SingleNtAlleleAlphabet.Plo@am__quote@
 
 .cc.o:
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<

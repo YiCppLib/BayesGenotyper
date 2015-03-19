@@ -1,5 +1,8 @@
 
 lib_LTLIBRARIES = libyi_bayesgenotype.la
 
-libyi_bayesgenotype_la_SOURCES = Genotyper.h \
+libyi_bayesgenotype_la_SOURCES = IAlleleAlphabet.h \
+								 SingleNtAlleleAlphabet.h \
+								 SingleNtAlleleAlphabet.cc \
+								 Genotyper.h \
 								 Genotyper.cc
