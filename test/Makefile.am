@@ -3,17 +3,20 @@ GTEST_DIR = @GTEST_DIR@
 
 AM_LDFLAGS = -all-static
 
-AM_CPPFLAGS = -isystem ${GMOCK_DIR}/include \
-			  -I${GMOCK_DIR} \
-			  -isystem ${GTEST_DIR}/include \
-			  -I${GTEST_DIR} \
-			  -I$(srcdir)/../src
+AM_CPPFLAGS = -I$(srcdir)/../src
+LDADD = ../src/libyi_bayesgenotype.la
 
-LDADD = ../src/libyi_bayesgenotype.la \
-		${GMOCK_DIR}/lib/libgmock.la \
-		${GTEST_DIR}/lib/libgtest.la \
-		${GMOCK_DIR}/lib/libgmock_main.la \
-		-lz
+if CUSTOM_GMOCK_PATH
+AM_CPPFLAGS += -isystem ${GMOCK_DIR}/include \
+			   -I${GMOCK_DIR} \
+			   -isystem ${GTEST_DIR}/include \
+			   -I${GTEST_DIR}
+
+LDADD += ${GMOCK_DIR}/lib/libgmock.la \
+		 ${GTEST_DIR}/lib/libgtest.la \
+		 ${GMOCK_DIR}/lib/libgmock_main.la 
+
+endif
 
 ## -- below to be changed -- ##
 
