@@ -76,8 +76,6 @@ echo "checking for gmock in ${gmock_path}"
 AC_CHECK_HEADERS([gmock/gmock.h], [have_gmock=yes], [have_gmock=no])
 AC_CHECK_HEADERS([gtest/gtest.h], [have_gtest=yes], [have_gtest=no])
 
-echo "have_gmock = ${have_gmock}, have_gtest = ${have_gtest}"
-
 AM_CONDITIONAL([FOUND_GMOCK], [test "x${have_gmock}" == xyes])
 AM_CONDITIONAL([FOUND_GTEST], [test "x${have_gtest}" == xyes])
 
