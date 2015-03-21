@@ -39,25 +39,35 @@ AC_ARG_WITH([gsl],
 							[specify the path to search for gnu scientific library])],
 							[gsl_path=${withval}])
 
-if test "x${gsl_path}" != x; then
-	if test -e ${gsl_path}/lib; then LDFLAGS+=" -L${gsl_path}/lib"; fi
-	if test -e ${gsl_path}/lib64; then LDFLAGS+=" -L${gsl_path}/lib64"; fi
-	if test -e ${gsl_path}/include; then CPPFLAGS+=" -I${gsl_path}/include"; fi
+if test "x${gsl_path}" != x -a -x "${gsl_path}/bin/gsl-config"; then
+	GSL_LDADDS=`${gsl_path}/bin/gsl-config --libs` 
+	GSL_CPPFLAGS=`${gsl_path}/bin/gsl-config --cflags`
+else
+	GSL_LDADDS=`gsl-config --libs` 
+	GSL_CPPFLAGS=`gsl-config --cflags`
 fi
 
 echo "checking for gsl in ${gsl_path}"
 
-have_gsl=no
+LDADDS+=" ${GSL_LDADDS}"
+CPPFLAGS+=" ${GSL_CPPFLAGS}"
 
-AC_SEARCH_LIBS([gsl_cdf_binomial_Q], [gsl], [have_gsl=yes], [have_gsl=no], [-lgsl -lgslcblas -lm])
+have_gsl=yes
+AC_SEARCH_LIBS([gsl_ran_multinomial_pdf], [gsl], [], [have_gsl=no], [${GSL_LDADDS}])
+AC_SEARCH_LIBS([gsl_multiset_calloc],     [gsl], [], [have_gsl=no], [${GSL_LDADDS}])
+AC_SEARCH_LIBS([gsl_multiset_next],       [gsl], [], [have_gsl=no], [${GSL_LDADDS}])
+AC_SEARCH_LIBS([gsl_multiset_free],       [gsl], [], [have_gsl=no], [${GSL_LDADDS}])
 
 if test "x${have_gsl}" = xyes; then
-	AC_CHECK_HEADERS([gsl/gsl_cdf.h], [], [have_gsl=no])
+	AC_CHECK_HEADERS([gsl/gsl_multiset.h], [], [have_gsl=no])
+	AC_CHECK_HEADERS([gsl/gsl_randist.h], [], [have_gsl=no])
 fi
 
-if test "x${have_gsl}" = xno; then
-	AC_MSG_ERROR([Unable to locate gsl])
-fi
+AM_CONDITIONAL([FOUND_GSL], [test "x${have_gsl}" == xyes])
+AM_CONDITIONAL([CUSTOM_GSL_PATH], [test "x${gsl_path}" != x])
+AM_COND_IF([FOUND_GSL], [AC_SUBST([GSL_DIR], [${gsl_path}])], [AC_MSG_ERROR([Unable to locate usable gsl library. If you have a custom built version, supply the path with --with-gsl=<path>])])
+AC_SUBST([GSL_LDADDS], [${GSL_LDADDS}])
+AC_SUBST([GSL_CPPFLAGS], [${GSL_CPPFLAGS}])
 ## END: CHECKINF FOR GSL ##
 
 ## START: CHECKING FOR GMOCK ##
@@ -65,12 +75,19 @@ AC_ARG_WITH([gmock],
 			[AS_HELP_STRING([--with-gmock=DIR],
 							[specify the path to search for gmock])],
 							[gmock_path=${withval}])
-if test "x${gmock_path}" != x; then
-	if test -e ${gmock_path}/lib; then LDFLAGS+=" -L${gmock_path}/lib"; fi
-	if test -e ${gmock_path}/include; then CPPFLAGS+=" -isystem ${gmock_path}/include -I${gmock_path}"; fi
-	if test -e ${gmock_path}/gtest/lib; then LDFLAGS+=" -L${gmock_path}/gtest/lib"; fi
-	if test -e ${gmock_path}/gtest/include; then CPPFLAGS+=" -isystem ${gmock_path}/gtest/include -I${gmock_path}/gtest"; fi
+if test "x${gmock_path}" != x -a -x "${gmock_path}/scripts/gmock-config"; then
+	GMOCK_CONFIG="${gmock_path}/scripts/gmock-config"
+else
+	GMOCK_CONFIG="gmock-config"
 fi
+
+GMOCK_CPPFLAGS=`${GMOCK_CONFIG} --cppflags`
+GMOCK_CXXFLAGS=`${GMOCK_CONFIG} --cxxflags`
+GMOCK_LDFLAGS=`${GMOCK_CONFIG} --ldflags`
+GMOCK_LDADDS=`${GMOCK_CONFIG} --libs`
+CPPFLAGS+=" ${GMOCK_CPPFLAGS}"
+CXXFLAGS+=" ${GMOCK_CXXFLAGS}"
+
 echo "checking for gmock in ${gmock_path}"
 
 AC_CHECK_HEADERS([gmock/gmock.h], [have_gmock=yes], [have_gmock=no])
@@ -82,6 +99,10 @@ AM_CONDITIONAL([FOUND_GTEST], [test "x${have_gtest}" == xyes])
 AM_CONDITIONAL([CUSTOM_GMOCK_PATH], [test "x${gmock_path}" != x])
 AM_COND_IF([FOUND_GMOCK], [AC_SUBST([GMOCK_DIR], [${gmock_path}])], [AC_MSG_WARN([Unable to locate gmock header, testing disabled])])
 AM_COND_IF([FOUND_GTEST], [AC_SUBST([GTEST_DIR], [${gmock_path}/gtest])], [AC_MSG_WARN([Unable to locate gtest header, testing disabled])])
+AC_SUBST([GMOCK_CPPFLAGS], [${GMOCK_CPPFLAGS}])
+AC_SUBST([GMOCK_CXXFLAGS], [${GMOCK_CXXFLAGS}])
+AC_SUBST([GMOCK_LDFLAGS], [${GMOCK_LDFLAGS}])
+AC_SUBST([GMOCK_LDADDS], [${GMOCK_LDADDS}])
 ## END: CHECKINF FOR GMOCK ##
 
 

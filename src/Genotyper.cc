@@ -1,6 +1,7 @@
 #include "Genotyper.h"
 
 #include <iostream>
+#include <algorithm>
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_multiset.h>
 #include <gsl/gsl_randist.h>

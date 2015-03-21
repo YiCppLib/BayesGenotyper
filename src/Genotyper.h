@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <tuple>
+#include <memory>
 
 namespace YiCppLib {
 
