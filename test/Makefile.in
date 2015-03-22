@@ -77,8 +77,8 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-TESTS = testSingleNtAlleleAlphabet$(EXEEXT) testSingleSample$(EXEEXT)
-check_PROGRAMS = $(am__EXEEXT_1)
+@FOUND_GMOCK_TRUE@TESTS = $(am__EXEEXT_1)
+check_PROGRAMS = $(am__EXEEXT_2)
 subdir = test
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/build-aux/depcomp \
@@ -96,14 +96,16 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__EXEEXT_1 = testSingleNtAlleleAlphabet$(EXEEXT) \
 	testSingleSample$(EXEEXT)
+@FOUND_GMOCK_TRUE@am__EXEEXT_2 = $(am__EXEEXT_1)
 am_testSingleNtAlleleAlphabet_OBJECTS =  \
 	testSingleNtAlleleAlphabet.$(OBJEXT)
 testSingleNtAlleleAlphabet_OBJECTS =  \
 	$(am_testSingleNtAlleleAlphabet_OBJECTS)
 testSingleNtAlleleAlphabet_LDADD = $(LDADD)
+am__DEPENDENCIES_1 =
 testSingleNtAlleleAlphabet_DEPENDENCIES =  \
-	../src/libyi_bayesgenotype.la ${GMOCK_DIR}/lib/libgmock.la \
-	${GTEST_DIR}/lib/libgtest.la ${GMOCK_DIR}/lib/libgmock_main.la
+	../src/libyi_bayesgenotype.la $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
@@ -112,8 +114,7 @@ am_testSingleSample_OBJECTS = testSingleSample.$(OBJEXT)
 testSingleSample_OBJECTS = $(am_testSingleSample_OBJECTS)
 testSingleSample_LDADD = $(LDADD)
 testSingleSample_DEPENDENCIES = ../src/libyi_bayesgenotype.la \
-	${GMOCK_DIR}/lib/libgmock.la ${GTEST_DIR}/lib/libgtest.la \
-	${GMOCK_DIR}/lib/libgmock_main.la
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -410,9 +411,13 @@ ECHO_T = @ECHO_T@
 EGREP = @EGREP@
 EXEEXT = @EXEEXT@
 FGREP = @FGREP@
-GMOCK_DIR = @GMOCK_DIR@
+GMOCK_CPPFLAGS = @GMOCK_CPPFLAGS@
+GMOCK_CXXFLAGS = @GMOCK_CXXFLAGS@
+GMOCK_LDADDS = @GMOCK_LDADDS@
+GMOCK_LDFLAGS = @GMOCK_LDFLAGS@
 GREP = @GREP@
-GTEST_DIR = @GTEST_DIR@
+GSL_CPPFLAGS = @GSL_CPPFLAGS@
+GSL_LDADDS = @GSL_LDADDS@
 HAVE_CXX11 = @HAVE_CXX11@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
@@ -504,18 +509,11 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-AM_LDFLAGS = -all-static
-AM_CPPFLAGS = -isystem ${GMOCK_DIR}/include \
-			  -I${GMOCK_DIR} \
-			  -isystem ${GTEST_DIR}/include \
-			  -I${GTEST_DIR} \
-			  -I$(srcdir)/../src
-
-LDADD = ../src/libyi_bayesgenotype.la \
-		${GMOCK_DIR}/lib/libgmock.la \
-		${GTEST_DIR}/lib/libgtest.la \
-		${GMOCK_DIR}/lib/libgmock_main.la \
-		-lz
+AM_CPPFLAGS = -I$(srcdir)/../src ${GSL_CPPFLAGS} ${GMOCK_CPPFLAGS} ${GMOCK_CXXFLAGS}
+AM_LDFLAGS = -all-static ${GMOCK_LDFLAGS}
+LDADD = ../src/libyi_bayesgenotype.la ${GSL_LDADDS} ${GMOCK_LDADDS} -lgmock_main
+PLANNED_TESTS = testSingleNtAlleleAlphabet \
+				testSingleSample
 
 testSingleNtAlleleAlphabet_SOURCES = testSingleNtAlleleAlphabet.cc
 testSingleSample_SOURCES = testSingleSample.cc

@@ -1,8 +1,5 @@
-
-if CUSTOM_GSL_PATH
-	AM_CPPFLAGS = -I@GSL_DIR@/include
-endif
-
+GSL_CPPFLAGS = @GSL_CPPFLAGS@
+AM_CPPFLAGS = ${GSL_CPPFLAGS}
 lib_LTLIBRARIES = libyi_bayesgenotype.la
 
 libyi_bayesgenotype_la_SOURCES = IAlleleAlphabet.h \

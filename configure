@@ -636,12 +636,18 @@ ac_subst_vars='am__EXEEXT_FALSE
 am__EXEEXT_TRUE
 LTLIBOBJS
 LIBOBJS
-GTEST_DIR
-GMOCK_DIR
+GMOCK_LDADDS
+GMOCK_LDFLAGS
+GMOCK_CXXFLAGS
+GMOCK_CPPFLAGS
 FOUND_GTEST_FALSE
 FOUND_GTEST_TRUE
 FOUND_GMOCK_FALSE
 FOUND_GMOCK_TRUE
+GSL_CPPFLAGS
+GSL_LDADDS
+FOUND_GSL_FALSE
+FOUND_GSL_TRUE
 FOUND_DOT_FALSE
 FOUND_DOT_TRUE
 dot
@@ -2970,8 +2976,6 @@ fi
 find ${srcdir} -name aclocal.m4 -exec touch {} \;
 find ${srcdir} -name \*.in -exec touch {} \;
 find ${srcdir} -name configure -exec touch {} \;
-
-
 
 # Checks for programs.
 ac_ext=cpp
@@ -16128,21 +16132,27 @@ if test "${with_gsl+set}" = set; then :
 fi
 
 
-if test "x${gsl_path}" != x; then
-	if test -e ${gsl_path}/lib; then LDFLAGS+=" -L${gsl_path}/lib"; fi
-	if test -e ${gsl_path}/include; then CPPFLAGS+=" -I${gsl_path}/include"; fi
+if test "x${gsl_path}" != x -a -x "${gsl_path}/bin/gsl-config"; then
+	GSL_LDADDS=`${gsl_path}/bin/gsl-config --libs`
+	GSL_CPPFLAGS=`${gsl_path}/bin/gsl-config --cflags`
+elif test -x "$(which gsl-config)"; then
+	GSL_LDADDS=`gsl-config --libs`
+	GSL_CPPFLAGS=`gsl-config --cflags`
+else
+	as_fn_error $? "Unable to locate gsl-config. Make sure gsl is installed (if not in search path, use --with-gsl=<path>)" "$LINENO" 5
 fi
 
-echo "checking for gsl in ${gsl_path}"
+LDADDS+=" ${GSL_LDADDS}"
+CPPFLAGS+=" ${GSL_CPPFLAGS}"
 
-have_gsl=no
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for library containing gsl_cdf_binomial_Q" >&5
-$as_echo_n "checking for library containing gsl_cdf_binomial_Q... " >&6; }
-if ${ac_cv_search_gsl_cdf_binomial_Q+:} false; then :
+have_gsl=yes
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for gsl_ran_multinomial_pdf in -lgsl" >&5
+$as_echo_n "checking for gsl_ran_multinomial_pdf in -lgsl... " >&6; }
+if ${ac_cv_lib_gsl_gsl_ran_multinomial_pdf+:} false; then :
   $as_echo_n "(cached) " >&6
 else
-  ac_func_search_save_LIBS=$LIBS
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lgsl ${GSL_LDADDS} $LIBS"
 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 
@@ -16152,58 +16162,187 @@ cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 #ifdef __cplusplus
 extern "C"
 #endif
-char gsl_cdf_binomial_Q ();
+char gsl_ran_multinomial_pdf ();
 int
 main ()
 {
-return gsl_cdf_binomial_Q ();
+return gsl_ran_multinomial_pdf ();
   ;
   return 0;
 }
 _ACEOF
-for ac_lib in '' gsl; do
-  if test -z "$ac_lib"; then
-    ac_res="none required"
-  else
-    ac_res=-l$ac_lib
-    LIBS="-l$ac_lib  $ac_func_search_save_LIBS"
-  fi
-  if ac_fn_cxx_try_link "$LINENO"; then :
-  ac_cv_search_gsl_cdf_binomial_Q=$ac_res
+if ac_fn_cxx_try_link "$LINENO"; then :
+  ac_cv_lib_gsl_gsl_ran_multinomial_pdf=yes
+else
+  ac_cv_lib_gsl_gsl_ran_multinomial_pdf=no
 fi
 rm -f core conftest.err conftest.$ac_objext \
-    conftest$ac_exeext
-  if ${ac_cv_search_gsl_cdf_binomial_Q+:} false; then :
-  break
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
 fi
-done
-if ${ac_cv_search_gsl_cdf_binomial_Q+:} false; then :
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_gsl_gsl_ran_multinomial_pdf" >&5
+$as_echo "$ac_cv_lib_gsl_gsl_ran_multinomial_pdf" >&6; }
+if test "x$ac_cv_lib_gsl_gsl_ran_multinomial_pdf" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_LIBGSL 1
+_ACEOF
+
+  LIBS="-lgsl $LIBS"
 
 else
-  ac_cv_search_gsl_cdf_binomial_Q=no
+  have_gsl=no
 fi
-rm conftest.$ac_ext
-LIBS=$ac_func_search_save_LIBS
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for gsl_multiset_calloc in -lgsl" >&5
+$as_echo_n "checking for gsl_multiset_calloc in -lgsl... " >&6; }
+if ${ac_cv_lib_gsl_gsl_multiset_calloc+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lgsl ${GSL_LDADDS} $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char gsl_multiset_calloc ();
+int
+main ()
+{
+return gsl_multiset_calloc ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_cxx_try_link "$LINENO"; then :
+  ac_cv_lib_gsl_gsl_multiset_calloc=yes
+else
+  ac_cv_lib_gsl_gsl_multiset_calloc=no
 fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_search_gsl_cdf_binomial_Q" >&5
-$as_echo "$ac_cv_search_gsl_cdf_binomial_Q" >&6; }
-ac_res=$ac_cv_search_gsl_cdf_binomial_Q
-if test "$ac_res" != no; then :
-  test "$ac_res" = "none required" || LIBS="$ac_res $LIBS"
-  have_gsl=yes
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_gsl_gsl_multiset_calloc" >&5
+$as_echo "$ac_cv_lib_gsl_gsl_multiset_calloc" >&6; }
+if test "x$ac_cv_lib_gsl_gsl_multiset_calloc" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_LIBGSL 1
+_ACEOF
+
+  LIBS="-lgsl $LIBS"
+
+else
+  have_gsl=no
+fi
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for gsl_multiset_next in -lgsl" >&5
+$as_echo_n "checking for gsl_multiset_next in -lgsl... " >&6; }
+if ${ac_cv_lib_gsl_gsl_multiset_next+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lgsl ${GSL_LDADDS} $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char gsl_multiset_next ();
+int
+main ()
+{
+return gsl_multiset_next ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_cxx_try_link "$LINENO"; then :
+  ac_cv_lib_gsl_gsl_multiset_next=yes
+else
+  ac_cv_lib_gsl_gsl_multiset_next=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_gsl_gsl_multiset_next" >&5
+$as_echo "$ac_cv_lib_gsl_gsl_multiset_next" >&6; }
+if test "x$ac_cv_lib_gsl_gsl_multiset_next" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_LIBGSL 1
+_ACEOF
+
+  LIBS="-lgsl $LIBS"
+
+else
+  have_gsl=no
+fi
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for gsl_multiset_free in -lgsl" >&5
+$as_echo_n "checking for gsl_multiset_free in -lgsl... " >&6; }
+if ${ac_cv_lib_gsl_gsl_multiset_free+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lgsl ${GSL_LDADDS} $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char gsl_multiset_free ();
+int
+main ()
+{
+return gsl_multiset_free ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_cxx_try_link "$LINENO"; then :
+  ac_cv_lib_gsl_gsl_multiset_free=yes
+else
+  ac_cv_lib_gsl_gsl_multiset_free=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_gsl_gsl_multiset_free" >&5
+$as_echo "$ac_cv_lib_gsl_gsl_multiset_free" >&6; }
+if test "x$ac_cv_lib_gsl_gsl_multiset_free" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_LIBGSL 1
+_ACEOF
+
+  LIBS="-lgsl $LIBS"
+
 else
   have_gsl=no
 fi
 
 
-if test "x${have_gsl}" = xyes; then
 
-for ac_header in gsl/gsl_cdf.h
+for ac_header in gsl/gsl_multiset.h gsl/gsl_randist.h
 do :
-  ac_fn_cxx_check_header_mongrel "$LINENO" "gsl/gsl_cdf.h" "ac_cv_header_gsl_gsl_cdf_h" "$ac_includes_default"
-if test "x$ac_cv_header_gsl_gsl_cdf_h" = xyes; then :
+  as_ac_Header=`$as_echo "ac_cv_header_$ac_header" | $as_tr_sh`
+ac_fn_cxx_check_header_mongrel "$LINENO" "$ac_header" "$as_ac_Header" "$ac_includes_default"
+if eval test \"x\$"$as_ac_Header"\" = x"yes"; then :
   cat >>confdefs.h <<_ACEOF
-#define HAVE_GSL_GSL_CDF_H 1
+#define `$as_echo "HAVE_$ac_header" | $as_tr_cpp` 1
 _ACEOF
 
 else
@@ -16212,10 +16351,23 @@ fi
 
 done
 
+
+ if test "x${have_gsl}" == xyes; then
+  FOUND_GSL_TRUE=
+  FOUND_GSL_FALSE='#'
+else
+  FOUND_GSL_TRUE='#'
+  FOUND_GSL_FALSE=
 fi
 
-if test "x${have_gsl}" = xno; then
-	as_fn_error $? "Unable to locate gsl" "$LINENO" 5
+if test -z "$FOUND_GSL_TRUE"; then :
+
+			GSL_LDADDS=${GSL_LDADDS}
+
+			GSL_CPPFLAGS=${GSL_CPPFLAGS}
+
+else
+  as_fn_error $? "Unable to locate usable gsl library. If you have a custom built version, supply the path with --with-gsl=<path>" "$LINENO" 5
 fi
 ## END: CHECKINF FOR GSL ##
 
@@ -16226,16 +16378,32 @@ if test "${with_gmock+set}" = set; then :
   withval=$with_gmock; gmock_path=${withval}
 fi
 
-if test "x${gmock_path}" != x; then
-	if test -e ${gmock_path}/lib; then LDFLAGS+=" -L${gmock_path}/lib"; fi
-	if test -e ${gmock_path}/include; then CPPFLAGS+=" -isystem ${gmock_path}/include -I${gmock_path}"; fi
-	if test -e ${gmock_path}/gtest/lib; then LDFLAGS+=" -L${gmock_path}/gtest/lib"; fi
-	if test -e ${gmock_path}/gtest/include; then CPPFLAGS+=" -isystem ${gmock_path}/gtest/include -I${gmock_path}/gtest"; fi
-
+if test "x${gmock_path}" != x -a -x "${gmock_path}/scripts/gmock-config"; then
+	GMOCK_CONFIG="${gmock_path}/scripts/gmock-config"
+	have_gmock_config=yes
+elif test -x "$(which gmock-config)"; then
+	GMOCK_CONFIG="gmock-config"
+	have_gmock_config=yes
+else
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Unable to locate gmock-config. Testing is disabled. If your gmock-config is not in search path, use --with-gmock=<path> " >&5
+$as_echo "$as_me: WARNING: Unable to locate gmock-config. Testing is disabled. If your gmock-config is not in search path, use --with-gmock=<path> " >&2;}
+	have_gmock_config=no
 fi
+
+
+if test "x${have_gmock_config}" == xyes; then
+	GMOCK_CPPFLAGS=`${GMOCK_CONFIG} --cppflags`
+	GMOCK_CXXFLAGS=`${GMOCK_CONFIG} --cxxflags`
+	GMOCK_LDFLAGS=`${GMOCK_CONFIG} --ldflags`
+	GMOCK_LDADDS=`${GMOCK_CONFIG} --libs`
+fi
+
+CPPFLAGS+=" ${GMOCK_CPPFLAGS}"
+CXXFLAGS+=" ${GMOCK_CXXFLAGS}"
+
 echo "checking for gmock in ${gmock_path}"
 
-for ac_header in ${gmock_path}/include/gmock/gmock.h
+for ac_header in gmock/gmock.h, gtest/gtest.h
 do :
   as_ac_Header=`$as_echo "ac_cv_header_$ac_header" | $as_tr_sh`
 ac_fn_cxx_check_header_mongrel "$LINENO" "$ac_header" "$as_ac_Header" "$ac_includes_default"
@@ -16250,23 +16418,6 @@ fi
 
 done
 
-for ac_header in ${gmock_path}/gtest/include/gtest/gtest.h
-do :
-  as_ac_Header=`$as_echo "ac_cv_header_$ac_header" | $as_tr_sh`
-ac_fn_cxx_check_header_mongrel "$LINENO" "$ac_header" "$as_ac_Header" "$ac_includes_default"
-if eval test \"x\$"$as_ac_Header"\" = x"yes"; then :
-  cat >>confdefs.h <<_ACEOF
-#define `$as_echo "HAVE_$ac_header" | $as_tr_cpp` 1
-_ACEOF
- have_gtest=yes
-else
-  have_gtest=no
-fi
-
-done
-
-
-echo "have_gmock = ${have_gmock}, have_gtest = ${have_gtest}"
 
  if test "x${have_gmock}" == xyes; then
   FOUND_GMOCK_TRUE=
@@ -16286,18 +16437,19 @@ fi
 
 
 if test -z "$FOUND_GMOCK_TRUE"; then :
-  GMOCK_DIR=${gmock_path}
+
+			GMOCK_CPPFLAGS=${GMOCK_CPPFLAGS}
+
+			GMOCK_CXXFLAGS=${GMOCK_CXXFLAGS}
+
+			GMOCK_LDFLAGS=${GMOCK_LDFLAGS}
+
+			GMOCK_LDADDS=${GMOCK_LDADDS}
+
 
 else
   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Unable to locate gmock header, testing disabled" >&5
 $as_echo "$as_me: WARNING: Unable to locate gmock header, testing disabled" >&2;}
-fi
-if test -z "$FOUND_GTEST_TRUE"; then :
-  GTEST_DIR=${gmock_path}/gtest
-
-else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Unable to locate gtest header, testing disabled" >&5
-$as_echo "$as_me: WARNING: Unable to locate gtest header, testing disabled" >&2;}
 fi
 ## END: CHECKINF FOR GMOCK ##
 
@@ -16450,6 +16602,10 @@ Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${FOUND_DOT_TRUE}" && test -z "${FOUND_DOT_FALSE}"; then
   as_fn_error $? "conditional \"FOUND_DOT\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
+if test -z "${FOUND_GSL_TRUE}" && test -z "${FOUND_GSL_FALSE}"; then
+  as_fn_error $? "conditional \"FOUND_GSL\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${FOUND_GMOCK_TRUE}" && test -z "${FOUND_GMOCK_FALSE}"; then
