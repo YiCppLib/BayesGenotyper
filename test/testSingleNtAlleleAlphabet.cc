@@ -35,5 +35,5 @@ TEST_F(AlphabetFixture, ReturnsRightAllele) {
 }
 
 TEST_F(AlphabetFixture, CanHandleInvalidArgument) {
-	ASSERT_THROW(alphabet->actual(4), std::shared_ptr<std::runtime_error>);
+	ASSERT_THROW(alphabet->actual(4), std::shared_ptr<Exceptions::InvalidAllele>);
 }

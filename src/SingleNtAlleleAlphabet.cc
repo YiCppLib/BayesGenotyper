@@ -15,6 +15,6 @@ size_t SingleNtAlleleAlphabet::count() const noexcept {
 }
 
 char SingleNtAlleleAlphabet::actual(size_t allele) const {
-	if(allele >= 4) throw std::shared_ptr<std::runtime_error>(new Exceptions::InvalidAlleleException("There are only 4 elements in the alphabet"));
+	if(allele >= 4) throw std::make_shared<Exceptions::InvalidAllele>();
 	return nt[allele];
 }

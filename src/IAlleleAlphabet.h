@@ -34,7 +34,10 @@ namespace YiCppLib {
 	};
 
 	namespace Exceptions {
-		class InvalidAlleleException : public std::runtime_error {public: InvalidAlleleException(const char * msg) : std::runtime_error(msg) {}};
+		class InvalidAllele: public std::runtime_error {
+			public: 
+				InvalidAllele() : std::runtime_error("The given allele is not in the allele alphabet") {}
+		};
 	}
 }
 
