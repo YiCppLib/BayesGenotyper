@@ -123,6 +123,8 @@ am__installdirs = "$(DESTDIR)$(libdir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 libyi_bayesgenotype_la_LIBADD =
 am_libyi_bayesgenotype_la_OBJECTS = SingleNtAlleleAlphabet.lo \
+	PloidyMultisetGenotypeList.lo IlluminaObservation.lo \
+	SamtoolsPileupEvidence.lo BayesPosteriorGenotyper.lo \
 	Genotyper.lo
 libyi_bayesgenotype_la_OBJECTS = $(am_libyi_bayesgenotype_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
@@ -340,6 +342,18 @@ lib_LTLIBRARIES = libyi_bayesgenotype.la
 libyi_bayesgenotype_la_SOURCES = IAlleleAlphabet.h \
 								 SingleNtAlleleAlphabet.h \
 								 SingleNtAlleleAlphabet.cc \
+								 IGenotypeList.h \
+								 PloidyMultisetGenotypeList.h \
+								 PloidyMultisetGenotypeList.cc \
+								 IObservation.h \
+								 IlluminaObservation.h \
+								 IlluminaObservation.cc \
+								 IEvidence.h \
+								 SamtoolsPileupEvidence.h \
+								 SamtoolsPileupEvidence.cc \
+								 IGenotyper.h \
+								 BayesPosteriorGenotyper.h \
+								 BayesPosteriorGenotyper.cc \
 								 Genotyper.h \
 								 Genotyper.cc
 
@@ -422,7 +436,11 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/BayesPosteriorGenotyper.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Genotyper.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IlluminaObservation.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PloidyMultisetGenotypeList.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SamtoolsPileupEvidence.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SingleNtAlleleAlphabet.Plo@am__quote@
 
 .cc.o:

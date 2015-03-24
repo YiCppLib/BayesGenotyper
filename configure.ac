@@ -55,6 +55,8 @@ AC_CHECK_LIB([gsl], [gsl_ran_multinomial_pdf], [], [have_gsl=no], [${GSL_LDADDS}
 AC_CHECK_LIB([gsl], [gsl_multiset_calloc], [], [have_gsl=no], [${GSL_LDADDS}])
 AC_CHECK_LIB([gsl], [gsl_multiset_next], [], [have_gsl=no], [${GSL_LDADDS}])
 AC_CHECK_LIB([gsl], [gsl_multiset_free], [], [have_gsl=no], [${GSL_LDADDS}])
+AC_CHECK_LIB([gsl], [gsl_blas_dgemv], [], [have_gsl=no], [${GSL_LDADDS}])
+AC_CHECK_LIB([gslcblas], [gsl_blas_dgemv], [], [have_gsl=no], [${GSL_LDADDS}])
 
 AC_CHECK_HEADERS([gsl/gsl_multiset.h gsl/gsl_randist.h], [], [have_gsl=no])
 

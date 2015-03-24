@@ -5,8 +5,8 @@ using namespace YiCppLib;
 
 SingleNtAlleleAlphabet::SingleNtAlleleAlphabet() {
 	nt[0] = 'A'; 
-	nt[1] = 'G'; 
-	nt[2] = 'C'; 
+	nt[1] = 'C'; 
+	nt[2] = 'G'; 
 	nt[3] = 'T';
 }
 

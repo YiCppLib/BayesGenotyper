@@ -15,7 +15,7 @@ digraph G {
 	]
 
 	IAlleleAlphabet [
-		label = "{IAlleleAlphabet\<T\>||+count() : int\l+actual(allele : int) : T\l}"
+		label = "{IAlleleAlphabet\<T\>||+count() : size_t\l+actual(allele : size_t) : T\l}"
 	]
 
 	SingleNtAlleleAlphabet [
@@ -30,17 +30,17 @@ digraph G {
 
 
 	IGenotypeList [
-		label = "{IGenotypeList||+begin() : iterator\<vector\<int\>\>\l+end() : iterator\<vector\<int\>\>\l}"
+		label = "{IGenotypeList||+cbegin() : const_iterator\<T_Genotype\>\l+cend() : const_iterator\<T_Genotype\>\l}"
 	]
 
 	PloidyMultisetGenotypeList [
-		label = "{PloidyMultisetGenotypeList||+init(alphabet : IAlleleAlphabet, ploidy : int)\l}"
+		label = "{PloidyMultisetGenotypeList||+init(alphabetSize : size_t, ploidy : int)\l}"
 	]
 
 	PloidyMultisetGenotypeList -> IGenotypeList
 
 	IObservation [
-		label = "{IObservation||+count() : int\l+quality() : double\l}"
+		label = "{IObservation||+allele() : size_t\l+quality() : double\l}"
 	]
 
 	NGSObservation [
@@ -55,13 +55,18 @@ digraph G {
 	IlluminaObservation -> NGSObservation
 
 	IEvidence [
-		label = "{IEvidence||+observationForAllele(allele : int) : IObservation\l}"
+		label = "{IEvidence||+observationForAllele(allele : size_t) : vector\<const IObservation&\>\l}"
+	]
+
+	SamtoolsPileupEvidence [
+		label = "{SamtoolsPileupEvidence||+init(pileupStr : string)\l}"
 	]
 
 	GraphPileupEvidence [
 		label = "{GraphPileupEvidence||...\l}"
 	]
 
+	SamtoolsPileupEvidence -> IEvidence
 	GraphPileupEvidence -> IEvidence
 
 	IGenotyper [

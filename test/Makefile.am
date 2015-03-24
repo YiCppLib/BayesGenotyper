@@ -10,6 +10,10 @@ AM_LDFLAGS = -all-static ${GMOCK_LDFLAGS}
 LDADD = ../src/libyi_bayesgenotype.la ${GSL_LDADDS} ${GMOCK_LDADDS} -lgmock_main
 
 PLANNED_TESTS = testSingleNtAlleleAlphabet \
+				testPloidyMultisetGenotypeList \
+				testIlluminaObservation \
+				testSamtoolsPileupEvidence \
+				testBayesPosteriorGenotyper \
 				testSingleSample
 
 if FOUND_GMOCK
@@ -18,6 +22,11 @@ endif
 
 check_PROGRAMS = ${TESTS}
 testSingleNtAlleleAlphabet_SOURCES=testSingleNtAlleleAlphabet.cc
+testPloidyMultisetGenotypeList_SOURCES = testPloidyMultisetGenotypeList.cc
+testIlluminaObservation_SOURCES = testIlluminaObservation.cc
+testSamtoolsPileupEvidence_SOURCES = testSamtoolsPileupEvidence.cc
+testBayesPosteriorGenotyper_SOURCES = testBayesPosteriorGenotyper.cc
 testSingleSample_SOURCES=testSingleSample.cc
+
 
 

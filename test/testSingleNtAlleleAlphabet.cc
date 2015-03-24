@@ -29,8 +29,8 @@ TEST_F(AlphabetFixture, ReturnsRightAlleleCount) {
 
 TEST_F(AlphabetFixture, ReturnsRightAllele) {
 	ASSERT_THAT(alphabet->actual(0), Eq('A'));
-	ASSERT_THAT(alphabet->actual(1), Eq('G'));
-	ASSERT_THAT(alphabet->actual(2), Eq('C'));
+	ASSERT_THAT(alphabet->actual(1), Eq('C'));
+	ASSERT_THAT(alphabet->actual(2), Eq('G'));
 	ASSERT_THAT(alphabet->actual(3), Eq('T'));
 }
 

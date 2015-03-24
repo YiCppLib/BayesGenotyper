@@ -95,21 +95,55 @@ CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__EXEEXT_1 = testSingleNtAlleleAlphabet$(EXEEXT) \
-	testSingleSample$(EXEEXT)
+	testPloidyMultisetGenotypeList$(EXEEXT) \
+	testIlluminaObservation$(EXEEXT) \
+	testSamtoolsPileupEvidence$(EXEEXT) \
+	testBayesPosteriorGenotyper$(EXEEXT) testSingleSample$(EXEEXT)
 @FOUND_GMOCK_TRUE@am__EXEEXT_2 = $(am__EXEEXT_1)
-am_testSingleNtAlleleAlphabet_OBJECTS =  \
-	testSingleNtAlleleAlphabet.$(OBJEXT)
-testSingleNtAlleleAlphabet_OBJECTS =  \
-	$(am_testSingleNtAlleleAlphabet_OBJECTS)
-testSingleNtAlleleAlphabet_LDADD = $(LDADD)
+am_testBayesPosteriorGenotyper_OBJECTS =  \
+	testBayesPosteriorGenotyper.$(OBJEXT)
+testBayesPosteriorGenotyper_OBJECTS =  \
+	$(am_testBayesPosteriorGenotyper_OBJECTS)
+testBayesPosteriorGenotyper_LDADD = $(LDADD)
 am__DEPENDENCIES_1 =
-testSingleNtAlleleAlphabet_DEPENDENCIES =  \
+testBayesPosteriorGenotyper_DEPENDENCIES =  \
 	../src/libyi_bayesgenotype.la $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
+am_testIlluminaObservation_OBJECTS =  \
+	testIlluminaObservation.$(OBJEXT)
+testIlluminaObservation_OBJECTS =  \
+	$(am_testIlluminaObservation_OBJECTS)
+testIlluminaObservation_LDADD = $(LDADD)
+testIlluminaObservation_DEPENDENCIES = ../src/libyi_bayesgenotype.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+am_testPloidyMultisetGenotypeList_OBJECTS =  \
+	testPloidyMultisetGenotypeList.$(OBJEXT)
+testPloidyMultisetGenotypeList_OBJECTS =  \
+	$(am_testPloidyMultisetGenotypeList_OBJECTS)
+testPloidyMultisetGenotypeList_LDADD = $(LDADD)
+testPloidyMultisetGenotypeList_DEPENDENCIES =  \
+	../src/libyi_bayesgenotype.la $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
+am_testSamtoolsPileupEvidence_OBJECTS =  \
+	testSamtoolsPileupEvidence.$(OBJEXT)
+testSamtoolsPileupEvidence_OBJECTS =  \
+	$(am_testSamtoolsPileupEvidence_OBJECTS)
+testSamtoolsPileupEvidence_LDADD = $(LDADD)
+testSamtoolsPileupEvidence_DEPENDENCIES =  \
+	../src/libyi_bayesgenotype.la $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
+am_testSingleNtAlleleAlphabet_OBJECTS =  \
+	testSingleNtAlleleAlphabet.$(OBJEXT)
+testSingleNtAlleleAlphabet_OBJECTS =  \
+	$(am_testSingleNtAlleleAlphabet_OBJECTS)
+testSingleNtAlleleAlphabet_LDADD = $(LDADD)
+testSingleNtAlleleAlphabet_DEPENDENCIES =  \
+	../src/libyi_bayesgenotype.la $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_testSingleSample_OBJECTS = testSingleSample.$(OBJEXT)
 testSingleSample_OBJECTS = $(am_testSingleSample_OBJECTS)
 testSingleSample_LDADD = $(LDADD)
@@ -149,9 +183,17 @@ AM_V_CXXLD = $(am__v_CXXLD_@AM_V@)
 am__v_CXXLD_ = $(am__v_CXXLD_@AM_DEFAULT_V@)
 am__v_CXXLD_0 = @echo "  CXXLD   " $@;
 am__v_CXXLD_1 = 
-SOURCES = $(testSingleNtAlleleAlphabet_SOURCES) \
+SOURCES = $(testBayesPosteriorGenotyper_SOURCES) \
+	$(testIlluminaObservation_SOURCES) \
+	$(testPloidyMultisetGenotypeList_SOURCES) \
+	$(testSamtoolsPileupEvidence_SOURCES) \
+	$(testSingleNtAlleleAlphabet_SOURCES) \
 	$(testSingleSample_SOURCES)
-DIST_SOURCES = $(testSingleNtAlleleAlphabet_SOURCES) \
+DIST_SOURCES = $(testBayesPosteriorGenotyper_SOURCES) \
+	$(testIlluminaObservation_SOURCES) \
+	$(testPloidyMultisetGenotypeList_SOURCES) \
+	$(testSamtoolsPileupEvidence_SOURCES) \
+	$(testSingleNtAlleleAlphabet_SOURCES) \
 	$(testSingleSample_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
@@ -513,9 +555,17 @@ AM_CPPFLAGS = -I$(srcdir)/../src ${GSL_CPPFLAGS} ${GMOCK_CPPFLAGS} ${GMOCK_CXXFL
 AM_LDFLAGS = -all-static ${GMOCK_LDFLAGS}
 LDADD = ../src/libyi_bayesgenotype.la ${GSL_LDADDS} ${GMOCK_LDADDS} -lgmock_main
 PLANNED_TESTS = testSingleNtAlleleAlphabet \
+				testPloidyMultisetGenotypeList \
+				testIlluminaObservation \
+				testSamtoolsPileupEvidence \
+				testBayesPosteriorGenotyper \
 				testSingleSample
 
 testSingleNtAlleleAlphabet_SOURCES = testSingleNtAlleleAlphabet.cc
+testPloidyMultisetGenotypeList_SOURCES = testPloidyMultisetGenotypeList.cc
+testIlluminaObservation_SOURCES = testIlluminaObservation.cc
+testSamtoolsPileupEvidence_SOURCES = testSamtoolsPileupEvidence.cc
+testBayesPosteriorGenotyper_SOURCES = testBayesPosteriorGenotyper.cc
 testSingleSample_SOURCES = testSingleSample.cc
 all: all-am
 
@@ -561,6 +611,22 @@ clean-checkPROGRAMS:
 	echo " rm -f" $$list; \
 	rm -f $$list
 
+testBayesPosteriorGenotyper$(EXEEXT): $(testBayesPosteriorGenotyper_OBJECTS) $(testBayesPosteriorGenotyper_DEPENDENCIES) $(EXTRA_testBayesPosteriorGenotyper_DEPENDENCIES) 
+	@rm -f testBayesPosteriorGenotyper$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(testBayesPosteriorGenotyper_OBJECTS) $(testBayesPosteriorGenotyper_LDADD) $(LIBS)
+
+testIlluminaObservation$(EXEEXT): $(testIlluminaObservation_OBJECTS) $(testIlluminaObservation_DEPENDENCIES) $(EXTRA_testIlluminaObservation_DEPENDENCIES) 
+	@rm -f testIlluminaObservation$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(testIlluminaObservation_OBJECTS) $(testIlluminaObservation_LDADD) $(LIBS)
+
+testPloidyMultisetGenotypeList$(EXEEXT): $(testPloidyMultisetGenotypeList_OBJECTS) $(testPloidyMultisetGenotypeList_DEPENDENCIES) $(EXTRA_testPloidyMultisetGenotypeList_DEPENDENCIES) 
+	@rm -f testPloidyMultisetGenotypeList$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(testPloidyMultisetGenotypeList_OBJECTS) $(testPloidyMultisetGenotypeList_LDADD) $(LIBS)
+
+testSamtoolsPileupEvidence$(EXEEXT): $(testSamtoolsPileupEvidence_OBJECTS) $(testSamtoolsPileupEvidence_DEPENDENCIES) $(EXTRA_testSamtoolsPileupEvidence_DEPENDENCIES) 
+	@rm -f testSamtoolsPileupEvidence$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(testSamtoolsPileupEvidence_OBJECTS) $(testSamtoolsPileupEvidence_LDADD) $(LIBS)
+
 testSingleNtAlleleAlphabet$(EXEEXT): $(testSingleNtAlleleAlphabet_OBJECTS) $(testSingleNtAlleleAlphabet_DEPENDENCIES) $(EXTRA_testSingleNtAlleleAlphabet_DEPENDENCIES) 
 	@rm -f testSingleNtAlleleAlphabet$(EXEEXT)
 	$(AM_V_CXXLD)$(CXXLINK) $(testSingleNtAlleleAlphabet_OBJECTS) $(testSingleNtAlleleAlphabet_LDADD) $(LIBS)
@@ -575,6 +641,10 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testBayesPosteriorGenotyper.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testIlluminaObservation.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testPloidyMultisetGenotypeList.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testSamtoolsPileupEvidence.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testSingleNtAlleleAlphabet.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testSingleSample.Po@am__quote@
 
@@ -801,6 +871,34 @@ recheck: all $(check_PROGRAMS)
 testSingleNtAlleleAlphabet.log: testSingleNtAlleleAlphabet$(EXEEXT)
 	@p='testSingleNtAlleleAlphabet$(EXEEXT)'; \
 	b='testSingleNtAlleleAlphabet'; \
+	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
+	--log-file $$b.log --trs-file $$b.trs \
+	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
+	"$$tst" $(AM_TESTS_FD_REDIRECT)
+testPloidyMultisetGenotypeList.log: testPloidyMultisetGenotypeList$(EXEEXT)
+	@p='testPloidyMultisetGenotypeList$(EXEEXT)'; \
+	b='testPloidyMultisetGenotypeList'; \
+	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
+	--log-file $$b.log --trs-file $$b.trs \
+	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
+	"$$tst" $(AM_TESTS_FD_REDIRECT)
+testIlluminaObservation.log: testIlluminaObservation$(EXEEXT)
+	@p='testIlluminaObservation$(EXEEXT)'; \
+	b='testIlluminaObservation'; \
+	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
+	--log-file $$b.log --trs-file $$b.trs \
+	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
+	"$$tst" $(AM_TESTS_FD_REDIRECT)
+testSamtoolsPileupEvidence.log: testSamtoolsPileupEvidence$(EXEEXT)
+	@p='testSamtoolsPileupEvidence$(EXEEXT)'; \
+	b='testSamtoolsPileupEvidence'; \
+	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
+	--log-file $$b.log --trs-file $$b.trs \
+	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
+	"$$tst" $(AM_TESTS_FD_REDIRECT)
+testBayesPosteriorGenotyper.log: testBayesPosteriorGenotyper$(EXEEXT)
+	@p='testBayesPosteriorGenotyper$(EXEEXT)'; \
+	b='testBayesPosteriorGenotyper'; \
 	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
